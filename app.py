@@ -77,14 +77,15 @@ def result():
 
     df.drop(['emp_title', 'purpose', 'addr_state'], axis=1, inplace=True)
 
+    for i in df:
+        print(i, df[i])
+
     # SCLAING
     from sklearn.preprocessing import MinMaxScaler
     scaler = pickle.load(open('models/scaling/scaler_num_cols.pkl', 'rb'))
     num_cols, cat_cols = split_num_cat_cols(df)
     df[num_cols] = scaler.transform(df[num_cols])
 
-    for i in df:
-        print(i, df[i])
 
     # Linear Regression
     from sklearn.linear_model import LogisticRegression
