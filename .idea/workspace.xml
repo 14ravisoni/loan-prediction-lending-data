@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3aad73ec-9d53-4925-8b27-fdbe46e02817" name="Default Changelist" comment="commit1" />
+    <list default="true" id="3aad73ec-9d53-4925-8b27-fdbe46e02817" name="Default Changelist" comment="updated app">
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,7 +90,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613756587797</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="updated app">
+      <created>1613756737169</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1613756737169</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -109,6 +118,7 @@
     <MESSAGE value="committed3" />
     <MESSAGE value="committed4" />
     <MESSAGE value="commit1" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit1" />
+    <MESSAGE value="updated app" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated app" />
   </component>
 </project>

@@ -4,6 +4,20 @@ import pickle
 import numpy as np
 
 
+# Function to get categorical and numerical columns
+def split_num_cat_cols(df):
+    cat_cols = []
+    num_cols = []
+
+    for column_name in df:
+        if df[column_name].dtype == 'int64' or df[column_name].dtype == 'float64':
+            num_cols.append(column_name)
+        else:
+            cat_cols.append(column_name)
+
+    return num_cols, cat_cols
+
+
 app = Flask(__name__)
 
 
@@ -65,17 +79,14 @@ def result():
 
     # SCLAING
     from sklearn.preprocessing import MinMaxScaler
-    scaler_num_cols = pickle.load(open('models/scaling/scaler_num_cols.pkl', 'rb'))
-    cat_cols = []
-    num_cols = []
-
-    for column_name in df:
-        df[column_name] = df[column_name].astype('float64')
+    scaler = pickle.load(open('models/scaling/scaler_num_cols.pkl', 'rb'))
+    num_cols, cat_cols = split_num_cat_cols(df)
+    df[num_cols] = scaler.transform(df[num_cols])
 
     # Linear Regression
     from sklearn.linear_model import LogisticRegression
     linear_regression = pickle.load(open('models/models/model_linear_regression.pkl', 'rb'))
-    y_pred = linear_regression.predict(df.reshape(1, -1))
+    y_pred = linear_regression.predict(np.array(df.values).reshape(1, -1))
 
     return render_template('prediction.html', print_result=1, result=y_pred)
 
@@ -92,10 +103,3 @@ def home():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-# Function to get categorical and numerical columns
-def split_num_cat_cols(df):
-
-
-    return num_cols, cat_cols
