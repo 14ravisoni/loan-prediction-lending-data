@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
+import category_encoders as ce
 import pickle
 
 app = Flask(__name__)
