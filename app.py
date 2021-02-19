@@ -49,7 +49,7 @@ def result():
 
     # ENCODING..
     import category_encoders
-    bin_encod_title = pickle.load(open('models/encoding/bin_encod_title.pkl', 'rb'))
+    bin_encod_title = pickle.load(open('models/encoding/bin_encod_emp_title.pkl', 'rb'))
     df_emp_title = bin_encod_title.transform(df['emp_title'])
     df = pd.concat([df, df_emp_title], axis=1)
 
