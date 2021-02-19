@@ -258,8 +258,16 @@
 
 						{% if print_result == 1 %}
 							<div class="row" style="margin-top:20px;">   <!-- START OF row 8 -->
-								<center> Your result is shown here {{ result }}</center>
-								<img src="{{ url_for('static', filename='images/linear_regression_score.PNG') }}">
+								<center>
+									According to provided details, your loan is
+									<b>
+										{% if result == 1 %}
+											Approved
+										{% else %}
+											Not Approved
+										{% endif %}
+									</b>
+								</center>
 							</div><!-- END OF row 8 -->
 						{% endif %}
 

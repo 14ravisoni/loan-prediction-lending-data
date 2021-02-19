@@ -56,8 +56,8 @@ def result():
         'credit_line_ratio': float(request.form['credit_line_ratio']),
         'fico_avg_score': float(request.form['fico_avg_score']),
         'disbursement_method': int(request.form['disbursement_method']),
-        'issue_d_month': int(issue_d[:4]),
-        'issue_d_year': int(issue_d[5:7])
+        'issue_d_year': int(issue_d[:4]),
+        'issue_d_month': int(issue_d[5:7])
     }
     df = pd.DataFrame(data=data, index=[0])
 
@@ -80,20 +80,20 @@ def result():
     year_dict = {2015:9, 2018:12, 2017:11, 2016:10, 2014:8, 2011:5, 2010:4, 2009:3, 2008:2, 2007:1, 2013:7, 2012:6, 2019:13, 2020:14, 2021:15}
     df['issue_d_year'] = df['issue_d_year'].map(year_dict)
 
-    # SCLAING
+    # SCALING
     from sklearn.preprocessing import MinMaxScaler
     scaler = pickle.load(open('models/scaling/scaler_num_cols.pkl', 'rb'))
     df['loan_status'] = 0.0
     num_cols, cat_cols = split_num_cat_cols(df)
     df[num_cols] = scaler.transform(df[num_cols])
-
+    df.drop(['loan_status'], axis=1, inplace=True)
 
     # Linear Regression
     from sklearn.linear_model import LogisticRegression
     linear_regression = pickle.load(open('models/models/model_linear_regression.pkl', 'rb'))
-    y_pred = linear_regression.predict(np.array(df.drop('loan_status').values).reshape(1, -1))
+    y_pred = linear_regression.predict(np.array(df.values).reshape(1, -1))
 
-    return render_template('prediction.html', print_result=1, result=y_pred)
+    return render_template('prediction.html', print_result=1, result=y_pred[0])
 
 
 @app.route('/profile', methods=['GET', 'POST'])
