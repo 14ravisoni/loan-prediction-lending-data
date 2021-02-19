@@ -1,14 +1,12 @@
 from flask import Flask, render_template, request
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.linear_model import LogisticRegression
-import category_encoders
 import pickle
+
 
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
     return render_template('index.html')
 
@@ -49,6 +47,7 @@ def result():
     df = pd.DataFrame(data=data, index=[0])
 
     # ENCODING..
+    import category_encoders
     bin_encod_title = pickle.load(open('models/encoding/bin_encod_title.pkl', 'rb'))
     df_emp_title = bin_encod_title.fit(df['emp_title'])
     df = pd.concat([df, df_emp_title], axis=1)
@@ -64,6 +63,7 @@ def result():
     df.drop(['emp_title', 'purpose', 'addr_state'], axis=1, inplace=True)
 
     # SCLAING
+    from sklearn.preprocessing import MinMaxScaler
     scaler_num_cols = pickle.load(open('models/scaling/scaler_num_cols.pkl', 'rb'))
     cat_cols = []
     num_cols = []
@@ -72,6 +72,7 @@ def result():
         df[column_name] = df[column_name].astype('float64')
 
     # Linear Regression
+    from sklearn.linear_model import LogisticRegression
     linear_regression = pickle.load(open('models/models/model_linear_regression.pkl', 'rb'))
     y_pred = linear_regression.predict(df)
 
