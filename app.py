@@ -50,15 +50,15 @@ def result():
     # ENCODING..
     import category_encoders
     bin_encod_title = pickle.load(open('models/encoding/bin_encod_title.pkl', 'rb'))
-    df_emp_title = bin_encod_title.fit(np.array(df['emp_title']).reshape(1, -1))
+    df_emp_title = bin_encod_title.transform(np.array(df['emp_title']).reshape(1, -1))
     df = pd.concat([df, df_emp_title], axis=1)
 
     bin_encod_purpose = pickle.load(open('models/encoding/bin_encod_purpose.pkl', 'rb'))
-    df_purpose = bin_encod_purpose.fit_transform(np.array(df['purpose']).reshape(1, -1))
+    df_purpose = bin_encod_purpose.transform(np.array(df['purpose']).reshape(1, -1))
     df = pd.concat([df, df_purpose], axis=1)
 
     bin_encod_addr_state = pickle.load(open('models/encoding/bin_encod_addr_state.pkl', 'rb'))
-    df_addr_state = bin_encod_addr_state.fit_transform(np.array(df['addr_state']).reshape(1, -1))
+    df_addr_state = bin_encod_addr_state.transform(np.array(df['addr_state']).reshape(1, -1))
     df = pd.concat([df, df_addr_state], axis=1)
 
     df.drop(['emp_title', 'purpose', 'addr_state'], axis=1, inplace=True)
