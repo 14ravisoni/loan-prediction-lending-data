@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loan Prediction</title>
+
+	<!-- CSS --> 
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600&display=swap&subset=latin-ext" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600&amp;subset=latin-ext" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/prediction.css') }}">
+	<link href="{{ url_for('static', filename='css/profile.css') }}" rel="stylesheet">
+
+	<!-- JS -->
+	<script src="{{ url_for('static', filename='js/vendor/modernizr-2.8.3.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/vendor/jquery-1.12.0.min.js') }}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="{{ url_for('static', filename='css/prediction.js') }}"></script>
+
+
+</head>
+<body background="{{ url_for('static', filename='images/index.jpg') }}">
+	<div class="container">
+		<div class="main-body">
+    
+			<nav aria-label="breadcrumb" class="main-breadcrumb">  <!-- Breadcrumb -->
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Prediction</li>
+				</ol>
+			</nav>  <!-- /Breadcrumb -->
+			
+			<div style="background:white; padding:5%; padding-bottom:1%; padding-top:1px; border-radius:5px;">
+				<h2>Please fill this form to get you loan approval status: </h2>
+				<form id="contact-form" role="form" action="/result" method="POST">
+					<div class="controls">
+
+						<div class="row">  <!-- START OF row 1 -->
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="loan_amnt">Loan Amount</label> 
+									<input id="loan_amnt" type="number" step="0.01" name="loan_amnt" class="form-control" placeholder="5000, 45000, 5600" required="required">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="term">Term</label> 
+									<select class="form-control" name="term">
+										<option value="1">36 months</option>
+										<option value="2">60 months</option>
+									</select> 
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="int_rate">Interest Rate</label> 
+									<input id="int_rate" type="number" step="0.01" name="int_rate" class="form-control" placeholder="12.45, 4.67, 9.07" required>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="sub_grade">Sub Grade</label> 
+									<select class="form-control" name="sub_grade">
+										<option value="0">G5</option>    <option value="1">G4</option>    <option value="2">G3</option>    <option value="3">G2</option>
+										<option value="4">G1</option>    <option value="5">F5</option>    <option value="6">F4</option>    <option value="7">F3</option>
+										<option value="8">F2</option>    <option value="9">F1</option>    <option value="10">E5</option>   <option value="11">E4</option>
+										<option value="12">E3</option>   <option value="13">E2</option>   <option value="14">E1</option>   <option value="15">D5</option>
+										<option value="16">D4</option>   <option value="17">D3</option>   <option value="18">D2</option>   <option value="19">D1</option>
+										<option value="20">C5</option>   <option value="21">C4</option>   <option value="22">C3</option>   <option value="23">C2</option>
+										<option value="24">C1</option>   <option value="25">B5</option>   <option value="26">B4</option>   <option value="27">B3</option>
+										<option value="28">B2</option>   <option value="29">B1</option>   <option value="30">A5</option>   <option value="31">A4</option>
+										<option value="32">A3</option>   <option value="33">A2</option>   <option value="34">A1</option>
+									</select>
+								</div>
+							</div>
+						</div> <!-- END OF row 1 -->
+
+						<div class="row">  <!-- START OF row 2 -->
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="emp_title">Employment Title</label> 
+									<input id="emp_title" type="text" name="emp_title" class="form-control" placeholder="Engineer, Photo Producer" required="required"> 
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="emp_length">Employment Duration</label> 
+									<select class="form-control" name="emp_length">
+										<option value="0.5">< 1 year</option>  <option value="1">1 year</option>       <option value="2">2 years</option>
+										<option value="3">3 years</option>     <option value="4">4 years</option>      <option value="5">5 years</option>
+										<option value="6">6 years</option>     <option value="7">7 years</option>      <option value="8">8 years</option>
+										<option value="9">9 years</option>     <option value="10">10+ years</option>
+									</select> 
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="annual_inc">Annual Income</label> 
+									<input id="annual_inc" type="number" step="0.01" name="annual_inc" class="form-control" placeholder="5000, 45000, 5600" required="required">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="home_ownership">Home Ownership</label> 
+									<select class="form-control" name="home_ownership">
+										<option value="4">MORTGAGE</option>   <option value="3">RENT</option>     <option value="5">OWN</option>
+										<option value="2">ANY</option>        <option value="1">NONE</option>     <option value="0">OTHER</option>
+									</select> 
+								</div>
+							</div>
+						</div>  <!-- END OF row 2 -->
+
+						<div class="row">  <!-- START OF row 3 -->
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="issue_d">Loan Issue Date</label> 
+									<input id="issue_d" type="date" name="issue_d" class="form-control" placeholder="Engineer, Photo Producer" required="required"> 
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="verification_status">Verification Status</label> 
+									<select class="form-control" name="verification_status">
+										<option value="2">Source Verified</option> <option value="1">Verified</option> <option value="0">Not Verified</option>
+									</select> 
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="pymnt_plan">Payment Plan</label> 
+									<select class="form-control" name="pymnt_plan">
+										<option value="y">Yes</option>  <option value="n">No</option>
+									</select> 
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="purpose">Loan Purpose</label> 
+									<select class="form-control" name="purpose">
+										<option value="debt_consolidation">Debt Consolidation</option>   <option value="small_business">Small Business</option>
+										<option value="home_improvement">Home Improvement</option>       <option value="major_purchase">Major Purchase</option>
+										<option value="credit_card">Credit Card</option>                 <option value="house">House</option>
+										<option value="vacation">Vacation</option>                       <option value="car">Car</option>
+										<option value="medical">Medical</option>                         <option value="moving">Moving</option>
+										<option value="renewable_energy">Renewable Energy</option>       <option value="wedding">Weding</option>
+										<option value="educational">Educational</option>                 <option value="other">Others</option>
+									</select> 
+								</div>
+							</div>
+						</div>   <!-- END OF row 3 -->
+
+						<div class="row">  <!-- START OF row 4 -->
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="dti">Debit to Income Ratio</label> 
+									<input id="dti" type="number" step="0.01" name="dti" class="form-control" placeholder="12.67, 6.9, 7.23" required="required">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="pub_rec">Number of public records</label> 
+									<input id="pub_rec" type="number" name="pub_rec" class="form-control" placeholder="1,4,10" required="required" max="61">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="application_type">Application Type</label> 
+									<select class="form-control" name="application_type">
+										<option value="1">Joint</option>     <option value="0">Individual</option>
+									</select> 
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="addr_state">State applicant live in</label> 
+									<select class="form-control" name="addr_state">
+										<option value="PA">PA</option> <option value="SD">SD</option> <option value="GA">GA</option> <option value="GA">GA</option>
+										<option value="MN">MN</option> <option value="SC">SC</option> <option value="RI">RI</option> <option value="NC">NC</option>
+										<option value="CA">CA</option> <option value="VA">VA</option> <option value="AZ">AZ</option> <option value="IN">IN</option>
+										<option value="MD">MD</option> <option value="NY">NY</option> <option value="TX">TX</option> <option value="KS">KS</option>
+										<option value="NM">NM</option> <option value="AL">AL</option> <option value="WA">WA</option> <option value="OH">OH</option>
+										<option value="LA">LA</option> <option value="FL">FL</option> <option value="CO">CO</option> <option value="MI">MI</option>
+										<option value="MO">MO</option> <option value="DC">MA</option> <option value="WI">WI</option> <option value="HI">HI</option>
+										<option value="VT">VT</option> <option value="NJ">NJ</option> <option value="DE">DE</option> <option value="TN">TN</option>
+										<option value="NH">NH</option> <option value="NE">NE</option> <option value="OR">OR</option> <option value="CT">CT</option>
+										<option value="AR">AR</option> <option value="NV">NV</option> <option value="WV">WV</option> <option value="MT">MT</option>
+										<option value="WY">WY</option> <option value="OK">OK</option> <option value="IL">IL</option> <option value="KY">KY</option>
+										<option value="MS">MS</option> <option value="UT">UT</option> <option value="ND">ND</option> <option value="ME">ME</option>
+										<option value="AK">AK</option> <option value="ID">ID</option> <option value="IA">IA</option>
+									</select> 
+								</div>
+							</div>
+						</div>   <!-- END OF row 4 -->
+
+						<div class="row">  <!-- START OF row 5 -->
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="tot_cur_bal">Total Current Balance</label> 
+									<input id="tot_cur_bal" type="number" step="0.01" name="tot_cur_bal" class="form-control" placeholder="5000, 45000, 5600" required="required">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="num_sats">Number of stats</label> 
+									<input id="num_sats" type="number" name="num_sats" class="form-control" placeholder="1,4,10" required="required" max="100">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="total_bc_limit">Total Balance Limit</label> 
+									<input id="total_bc_limit" type="number" step="0.01" name="total_bc_limit" class="form-control" placeholder="5000, 45000, 5600" required="required">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="hardship_flag">Hardship Flag</label> 
+									<select class="form-control" name="hardship_flag">
+										<option value="n">No</option>  <option value="y">Yes</option>
+									</select> 
+								</div>
+							</div>
+						</div>    <!-- END OF row 5 -->
+
+						<div class="row">   <!-- START OF row 6 -->
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="credit_line_ratio">Credit Line Ratio</label> 
+									<input id="credit_line_ratio" type="number" step="0.01" name="credit_line_ratio" class="form-control" placeholder="0.1, 0.7, 0.8" required="required">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="fico_avg_score">FICO Average Score</label> 
+									<input id="fico_avg_score" type="number" step="0.01" name="fico_avg_score" class="form-control" placeholder="600, 540, 789" required="required">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group"> 
+									<label for="disbursement_method">Disbursement Method</label> 
+									<select class="form-control" name="disbursement_method">
+										<option value="0">Cash</option>   <option value="1">DirectPay</option>
+									</select> 
+								</div>
+							</div>
+						</div>    <!-- END OF row 6 -->
+
+
+						<div class="row">   <!-- START OF row 7 -->
+							<div class="col-md-12"> 
+								<input type="submit" class="btn btn-success btn-send pt-2 btn-block " value="Show Result"> 
+							</div>
+						</div><!-- END OF row 7 -->
+
+
+						{% if print_result == 1 %}
+							<div class="row" style="margin-top:20px;">   <!-- START OF row 8 -->
+								<center> Your result is shown here {{ result }}</center>
+								<img src="{{ url_for('static', filename='images/linear_regression_score.PNG') }}">
+							</div><!-- END OF row 8 -->
+						{% endif %}
+
+
+					</div><!-- END OF controls -->
+				</form>
+			</div> <!-- END of div in form -->
+
+		</div> <!-- END of main-body -->
+	</div> <!-- END of container -->
+</body>
+</html>
