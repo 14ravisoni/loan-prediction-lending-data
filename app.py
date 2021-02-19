@@ -83,6 +83,9 @@ def result():
     num_cols, cat_cols = split_num_cat_cols(df)
     df[num_cols] = scaler.transform(df[num_cols])
 
+    for i in df:
+        print(i, df[i])
+
     # Linear Regression
     from sklearn.linear_model import LogisticRegression
     linear_regression = pickle.load(open('models/models/model_linear_regression.pkl', 'rb'))
