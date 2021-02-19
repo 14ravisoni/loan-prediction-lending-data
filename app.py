@@ -2,27 +2,13 @@ from flask import Flask, render_template, request
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
-import category_encoders as ce
+import category_encoders
 import pickle
 
 app = Flask(__name__)
 
 
-# Function to get categorical and numerical columns
-def split_num_cat_cols(df):
-    cat_cols = []
-    num_cols = []
-
-    for column_name in df:
-        if df[column_name].dtype == 'int64' or df[column_name].dtype == 'float64':
-            num_cols.append(column_name)
-        else:
-            cat_cols.append(column_name)
-
-    return num_cols, cat_cols
-
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
@@ -36,28 +22,28 @@ def prediction():
 def result():
     issue_d = request.form['issue_d']
     data = {
-        'loan_amnt': request.form['loan_amnt'],
-        'term': request.form['term'],
-        'int_rate': request.form['int_rate'],
-        'sub_grade': request.form['sub_grade'],
+        'loan_amnt': float(request.form['loan_amnt']),
+        'term': int(request.form['term']),
+        'int_rate': float(request.form['int_rate']),
+        'sub_grade': int(request.form['sub_grade']),
         'emp_title': request.form['emp_title'],
-        'emp_length': request.form['emp_length'],
-        'annual_inc': request.form['annual_inc'],
-        'home_ownership': request.form['home_ownership'],
-        'verification_status': request.form['verification_status'],
-        'pymnt_plan': request.form['pymnt_plan'],
+        'emp_length': float(request.form['emp_length']),
+        'annual_inc': float(request.form['annual_inc']),
+        'home_ownership': int(request.form['home_ownership']),
+        'verification_status': int(request.form['verification_status']),
+        'pymnt_plan': int(request.form['pymnt_plan']),
         'purpose': request.form['purpose'],
-        'dti': request.form['dti'],
-        'pub_rec': request.form['pub_rec'],
-        'application_type': request.form['application_type'],
+        'dti': int(request.form['dti']),
+        'pub_rec': int(request.form['pub_rec']),
+        'application_type': int(request.form['application_type']),
         'addr_state': request.form['addr_state'],
-        'tot_cur_bal': request.form['tot_cur_bal'],
-        'num_sats': request.form['num_sats'],
-        'total_bc_limit': request.form['total_bc_limit'],
-        'credit_line_ratio': request.form['credit_line_ratio'],
-        'fico_avg_score': request.form['fico_avg_score'],
-        'disbursement_method': request.form['disbursement_method'],
-        'issue_d_month': issue_d[:4],
+        'tot_cur_bal': int(request.form['tot_cur_bal']),
+        'num_sats': int(request.form['num_sats']),
+        'total_bc_limit': float(request.form['total_bc_limit']),
+        'credit_line_ratio': float(request.form['credit_line_ratio']),
+        'fico_avg_score': float(request.form['fico_avg_score']),
+        'disbursement_method': int(request.form['disbursement_method']),
+        'issue_d_month': int(issue_d[:4]),
         'issue_d_year': issue_d[5:7]
     }
     df = pd.DataFrame(data=data, index=[0])
@@ -79,8 +65,11 @@ def result():
 
     # SCLAING
     scaler_num_cols = pickle.load(open('models/scaling/scaler_num_cols.pkl', 'rb'))
-    num_cols, cat_cols = split_num_cat_cols(df)
-    df[num_cols] = scaler_num_cols.fit(df[num_cols])
+    cat_cols = []
+    num_cols = []
+
+    for column_name in df:
+        df[column_name] = df[column_name].astype('float64')
 
     # Linear Regression
     linear_regression = pickle.load(open('models/models/model_linear_regression.pkl', 'rb'))
@@ -89,12 +78,12 @@ def result():
     return render_template('prediction.html', print_result=1, result=y_pred)
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     return render_template('profile.html')
 
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
 
@@ -102,3 +91,9 @@ def home():
 if __name__ == '__main__':
     app.run(debug=True)
 
+
+# Function to get categorical and numerical columns
+def split_num_cat_cols(df):
+
+
+    return num_cols, cat_cols
