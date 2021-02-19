@@ -31,7 +31,7 @@ def result():
         'verification_status': int(request.form['verification_status']),
         'pymnt_plan': int(request.form['pymnt_plan']),
         'purpose': request.form['purpose'],
-        'dti': int(request.form['dti']),
+        'dti': float(request.form['dti']),
         'pub_rec': int(request.form['pub_rec']),
         'application_type': int(request.form['application_type']),
         'addr_state': request.form['addr_state'],
