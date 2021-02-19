@@ -62,27 +62,27 @@ def result():
     df = pd.DataFrame(data=data, index=[0])
 
     # ENCODING..
-    bin_encod_title = pickle.load('models/encoding/bin_encod_title.pkl')
+    bin_encod_title = pickle.load(open('models/encoding/bin_encod_title.pkl', 'rb'))
     df_emp_title = bin_encod_title.fit(df['emp_title'])
     df = pd.concat([df, df_emp_title], axis=1)
 
-    bin_encod_purpose = pickle.load('models/encoding/bin_encod_purpose.pkl')
+    bin_encod_purpose = pickle.load(open('models/encoding/bin_encod_purpose.pkl', 'rb'))
     df_purpose = bin_encod_purpose.fit_transform(df['purpose'])
     df = pd.concat([df, df_purpose], axis=1)
 
-    bin_encod_addr_state = pickle.load('models/encoding/bin_encod_addr_state.pkl')
+    bin_encod_addr_state = pickle.load(open('models/encoding/bin_encod_addr_state.pkl', 'rb'))
     df_addr_state = bin_encod_addr_state.fit_transform(df['addr_state'])
     df = pd.concat([df, df_addr_state], axis=1)
 
     df.drop(['emp_title', 'purpose', 'addr_state'], axis=1, inplace=True)
 
     # SCLAING
-    scaler_num_cols = pickle.load('models/scaling/scaler_num_cols.pkl')
+    scaler_num_cols = pickle.load(open('models/scaling/scaler_num_cols.pkl', 'rb'))
     num_cols, cat_cols = split_num_cat_cols(df)
     df[num_cols] = scaler_num_cols.fit(df[num_cols])
 
     # Linear Regression
-    linear_regression = pickle.load('models/models/model_linear_regression.pkl')
+    linear_regression = pickle.load(open('models/models/model_linear_regression.pkl', 'rb'))
     y_pred = linear_regression.predict(df)
 
     return render_template('prediction.html', print_result=1, result=y_pred)
