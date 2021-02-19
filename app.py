@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import pickle
+import numpy as np
 
 
 app = Flask(__name__)
@@ -49,15 +50,15 @@ def result():
     # ENCODING..
     import category_encoders
     bin_encod_title = pickle.load(open('models/encoding/bin_encod_title.pkl', 'rb'))
-    df_emp_title = bin_encod_title.fit(df['emp_title'])
+    df_emp_title = bin_encod_title.fit(np.array(df['emp_title']).reshape(1, -1))
     df = pd.concat([df, df_emp_title], axis=1)
 
     bin_encod_purpose = pickle.load(open('models/encoding/bin_encod_purpose.pkl', 'rb'))
-    df_purpose = bin_encod_purpose.fit_transform(df['purpose'])
+    df_purpose = bin_encod_purpose.fit_transform(np.array(df['purpose']).reshape(1, -1))
     df = pd.concat([df, df_purpose], axis=1)
 
     bin_encod_addr_state = pickle.load(open('models/encoding/bin_encod_addr_state.pkl', 'rb'))
-    df_addr_state = bin_encod_addr_state.fit_transform(df['addr_state'])
+    df_addr_state = bin_encod_addr_state.fit_transform(np.array(df['addr_state']).reshape(1, -1))
     df = pd.concat([df, df_addr_state], axis=1)
 
     df.drop(['emp_title', 'purpose', 'addr_state'], axis=1, inplace=True)
@@ -74,7 +75,7 @@ def result():
     # Linear Regression
     from sklearn.linear_model import LogisticRegression
     linear_regression = pickle.load(open('models/models/model_linear_regression.pkl', 'rb'))
-    y_pred = linear_regression.predict(df)
+    y_pred = linear_regression.predict(df.reshape(1, -1))
 
     return render_template('prediction.html', print_result=1, result=y_pred)
 
